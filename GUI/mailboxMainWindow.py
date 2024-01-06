@@ -30,3 +30,28 @@ class MailBoxMainWindow(QMainWindow, Ui_ThunderNOTBird):
         self.uiMailBox.mailTableWidget.setColumnWidth(2, 150)
         self.uiMailBox.mailTableWidget.itemDoubleClicked.connect(self.show_content)
 
+    def show_inbox(self, imapObject):
+        self.imapObject = imapObject
+        self.inbox = self.imapObject.mailbox_printer("Inbox")
+
+        self.uiMailBox.mailTableWidget.setRowCount(0)
+
+        try:
+            for mail in self.inbox:
+                row = 0
+                self.uiMailBox.mailTableWidget.insertRow(row)
+                self.uiMailBox.mailTableWidget.setItem(
+                    row, 0, QTableWidgetItem(mail["From"])
+                )
+                self.uiMailBox.mailTableWidget.setItem(
+                    row,
+                    1,
+                    QTableWidgetItem(self.imapObject.decode_subject(mail["Subject"])),
+                )
+                self.uiMailBox.mailTableWidget.setItem(
+                    row, 2, QTableWidgetItem(mail["Date"])
+                )
+                row += 1
+        except Exception as e:
+            print("Error name:" + str(e))
+
