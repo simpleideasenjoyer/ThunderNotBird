@@ -30,6 +30,19 @@ class SendEmail:
         body = MIMEText(content, "plain")
         return self.msg.attach(body)
 
+    def attachment(self, file_path):
+        content_type = mimetypes.guess_type(file_path)[0]
+        filename = basename(file_path)
+        if content_type is None:
+            content_type = "application/octet-stream"
+        main_type, sub_type = content_type.split("/", 1)
+        with open(file_path, "rb") as attachment:
+            mime_base = MIMEBase(main_type, sub_type)
+            mime_base.set_payload((attachment).read())
+            encoders.encode_base64(mime_base)
+            mime_base.add_header("Content-Disposition", "attachment", filename=filename)
+            return self.msg.attach(mime_base)
+
     def send_mail(self):
         try:
             with smtplib.SMTP_SSL(
