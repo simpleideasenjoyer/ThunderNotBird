@@ -55,3 +55,7 @@ class MailBoxMainWindow(QMainWindow, Ui_ThunderNOTBird):
         except Exception as e:
             print("Error name:" + str(e))
 
+    def show_content(self, item):
+        row = item.row()
+        self.openContent.emit()
+        self.contentObject.emit(self.inbox[row])
