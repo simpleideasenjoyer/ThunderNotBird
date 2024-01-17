@@ -38,3 +38,12 @@ class CreateMessage(QWidget, Ui_CreateMessageWidget):
         self.smtpObject.send_mail()
         self.close()
 
+    def add_attachment(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filePaths, _ = QFileDialog.getOpenFileNames(
+            self, "Wybierz pliki", "", "Wszystkie pliki (*);;Pliki tekstowe (*.txt)"
+        )
+        if filePaths:
+            self.attachments.extend(filePaths)
+            self.update_attachment_list()
