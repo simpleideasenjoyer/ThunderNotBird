@@ -47,3 +47,11 @@ class CreateMessage(QWidget, Ui_CreateMessageWidget):
         if filePaths:
             self.attachments.extend(filePaths)
             self.update_attachment_list()
+
+
+    def update_attachment_list(self):
+        self.uiCreateMessage.attachmentListWidget.clear()
+        for filePaths in self.attachments:
+            filename = QFileInfo(filePaths).fileName()
+            item = QListWidgetItem(filename)
+            self.uiCreateMessage.attachmentListWidget.addItem(item)
