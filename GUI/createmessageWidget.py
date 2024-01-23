@@ -48,10 +48,16 @@ class CreateMessage(QWidget, Ui_CreateMessageWidget):
             self.attachments.extend(filePaths)
             self.update_attachment_list()
 
-
     def update_attachment_list(self):
         self.uiCreateMessage.attachmentListWidget.clear()
         for filePaths in self.attachments:
             filename = QFileInfo(filePaths).fileName()
             item = QListWidgetItem(filename)
             self.uiCreateMessage.attachmentListWidget.addItem(item)
+
+    def remove_attachment(self, item):
+        row = self.uiCreateMessage.attachmentListWidget.row(
+            self.uiCreateMessage.attachmentListWidget.itemFromIndex(item)
+        )
+        del self.attachments[row]
+        self.update_attachment_list()
